@@ -9,7 +9,7 @@ def load_reader(model_names: list[str]):
 
     # if not provided any model names return error
     if len(model_names) < 1:
-        return (None, Exception("wrong models provided"))
+        return (None, Exception("No models provided"))
 
     try:
         # create a reader, load models, and return reader
