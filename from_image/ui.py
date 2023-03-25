@@ -1,14 +1,30 @@
 import toga
-from from_image import ui_handler as uih
+from toga import Button
+from toga.style.pack import Pack, ROW, CENTER
+from from_image.ocr import get_languages, load_reader, read_from_image
 
 
 def create_ui(_):
-    """ui setup"""
-    box = toga.Box()
+    return toga.Box(
+        children=[
+            toga.Box(
+                style=Pack(direction=ROW, alignment=CENTER, padding=10),
+                children=[
+                    toga.Label("Languages:"),
+                    toga.Selection(items=list(get_languages().keys())),
+                    toga.Button("Do", on_press=click_handler),
+                ],
+            )
+        ]
+    )
 
-    button = toga.Button("Do", on_press=uih.click_handler)
-    button.style.padding = 50
-    button.style.flex = 1
-    box.add(button)
 
-    return box
+def click_handler(btn: Button):
+    reader, error = load_reader(["en", "ar", "ku"])
+    if isinstance(error, Exception):
+        print(error)
+        btn.text = "Error"
+        return
+
+    read_from_image(reader, "mock/note.png")
+    btn.text = "Read"
