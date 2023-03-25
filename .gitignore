@@ -1,2 +1,8 @@
-*pycache*
-.mypy*
+__pycache__/
+*.py[cod]
+*$py.class
+
+dist/
+
+*.manifest
+*.spec
