@@ -1,10 +1,10 @@
 import sys
 import toga
 from toga.style.pack import Pack, ROW, CENTER, COLUMN
-from from_image.ocr import LANGUAGES, load_reader, read_from_image
+from imgtotxt.ocr import LANGUAGES, load_reader, read_from_image
 
 
-class FromImageApp(toga.App):
+class MyApp(toga.App):
     def startup(self):
         # create main window
         self.main_window = toga.MainWindow(title=self.name)
@@ -71,7 +71,7 @@ class FromImageApp(toga.App):
     async def action_question_dialog(self, _):
         """on app exit ask for confirmation"""
         if await self.main_window.question_dialog(
-            "FromImage", "Do you want to exit the app?"
+            "ImgToTxt", "Do you want to exit the app?"
         ):
             print("Exited")
             sys.exit(0)
@@ -91,9 +91,9 @@ class FromImageApp(toga.App):
 
 
 def run_app():
-    return FromImageApp(
-        formal_name="FromImage",
-        app_id="systems.ahmed.from-image",
-        app_name="from-image",
+    return MyApp(
+        formal_name="ImgToTxt - Image To Text",
+        app_id="systems.ahmed.imgtotxt",
+        app_name="imgtotxt",
         author="https://ahmed.systems",
     )
