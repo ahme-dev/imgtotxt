@@ -1,6 +1,6 @@
 import sys
 import toga
-from toga.style.pack import Pack, ROW, CENTER, COLUMN
+from toga.style.pack import Pack, ROW, COLUMN
 from imgtotxt.ocr import LANGUAGES, load_reader, read_from_image
 
 
@@ -93,7 +93,7 @@ class MyApp(toga.App):
         else:
             return
 
-    def action_open_secondary_window(self, widget):
+    def action_open_secondary_window(self, _):
         window = toga.Window(title="Selected languages to detect")
 
         window.content = toga.Box(
