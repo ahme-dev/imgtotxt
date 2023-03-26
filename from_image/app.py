@@ -13,7 +13,36 @@ class FromImageApp(toga.App):
         image = toga.ImageView(toga.Image("../mock/note.png"))
         image.style.update(height=300, width=300)
 
-        box = toga.Box(children=[])
+        # create styles for the components
+        title_style = Pack(font_size=20, padding_bottom=12, padding_top=10)
+        button_style = Pack(padding_bottom=8)
+        container_style = Pack(
+            padding_bottom=5, padding_top=5, padding_left=20, padding_right=20
+        )
+
+        box = toga.Box(
+            style=Pack(direction=ROW, padding=10),
+            children=[
+                toga.Box(
+                    style=Pack(direction=COLUMN, padding=10),
+                    children=[
+                        toga.Label("Actions", style=title_style),
+                        toga.Button("Languages", style=button_style),
+                        toga.Button("Open Image", style=button_style),
+                        toga.Button("Extract Text", style=button_style),
+                    ],
+                ),
+                toga.Divider(direction=toga.Divider.VERTICAL, style=container_style),
+                toga.Box(
+                    style=Pack(direction=COLUMN, padding=10),
+                    children=[
+                        toga.Label("Image", style=title_style),
+                        toga.Label("Text", style=title_style),
+                        toga.Label("The text extracted will display here"),
+                    ],
+                ),
+            ],
+        )
 
         # hook on exit handler, add content to main window and show
         self.on_exit = self.action_question_dialog
