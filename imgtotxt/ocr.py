@@ -108,9 +108,12 @@ def load_reader(model_names: list[str]):
 
 def read_from_image(reader: Reader, image_path: str, paragraph=True):
     """uses reader to read text in given image path"""
+
+    print(image_path)
+
     result = reader.readtext(image_path, paragraph=paragraph)
 
     print(result)
     print(result[0])
-    print(result[0][0])
+    print(result[0][1])
     return result

@@ -7,6 +7,21 @@ class AppState:
         self.image = "No image selected"
         self.text = "No text extracted"
 
+    def reset_langs(self):
+        self.langs = []
+
+    def get_lang_keys(self):
+        """return a list of lang keys (values in the dict)"""
+        keys = []
+
+        # get the key of each selected language
+        for lang in self.langs:
+            # append to the list
+            keys.append(str(LANGUAGES.get(lang)))
+
+        # return the list of keys
+        return keys
+
     def get_langs_text(self):
         """retun a nicely formatted string of languages or none"""
         text = ", ".join(self.langs)

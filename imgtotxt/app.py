@@ -27,6 +27,7 @@ class MyApp(toga.App):
         # bind some components to self
         self.langsLabel = toga.Label(state.current.get_langs_text())
         self.imageLabel = toga.Label(state.current.image)
+        self.textLabel = toga.Label(state.current.text)
 
         box = toga.Box(
             style=Pack(direction=ROW, padding=10),
@@ -45,7 +46,11 @@ class MyApp(toga.App):
                             style=button_style,
                             on_press=self.action_open_file_filtered_dialog,
                         ),
-                        toga.Button("Extract Text", style=button_style),
+                        toga.Button(
+                            "Extract Text",
+                            style=button_style,
+                            on_press=self.extract_text,
+                        ),
                     ],
                 ),
                 toga.Divider(direction=toga.Divider.VERTICAL, style=container_style),
@@ -57,7 +62,7 @@ class MyApp(toga.App):
                         toga.Label("Current Image", style=title_style),
                         self.imageLabel,
                         toga.Label("Extracted Text", style=title_style),
-                        toga.Label("No text extracted"),
+                        self.textLabel,
                     ],
                 ),
             ],
@@ -105,28 +110,28 @@ class MyApp(toga.App):
 
     def action_open_secondary_window(self, _):
         window = toga.Window(title="Selected languages to detect")
-        self.langsWindowLabel = toga.Label(state.current.get_langs_text())
+
+        lang_item_style = Pack(padding_bottom=10)
+
+        self.langPopupLabel = toga.Label(
+            f"Selected: {state.current.get_langs_text()}", style=lang_item_style
+        )
 
         window.content = toga.Box(
             style=Pack(flex=1, direction=COLUMN, padding=20),
             children=[
                 toga.Label(
-                    style=Pack(padding_bottom=10),
+                    style=lang_item_style,
                     text="Note: some languages are incompatible with each other",
                 ),
                 toga.Selection(
                     items=list(LANGUAGES.keys()),
-                    style=Pack(padding_bottom=10),
+                    style=lang_item_style,
                     on_select=self.change_select,
                 ),
-                toga.Box(
-                    style=Pack(padding_bottom=10),
-                    children=[
-                        toga.Label(
-                            text="Selected: ",
-                        ),
-                        self.langsWindowLabel,
-                    ],
+                self.langPopupLabel,
+                toga.Button(
+                    "Load languages", on_press=self.load_langs, style=lang_item_style
                 ),
             ],
         )
@@ -138,19 +143,36 @@ class MyApp(toga.App):
     def change_select(self, widget: toga.Selection):
         """on new selection change state and ui"""
         state.current.modify_langs(widget.value)
-        self.langsWindowLabel.text = state.current.get_langs_text()
+        self.langPopupLabel.text = f"Selected: {state.current.get_langs_text()}"
         self.langsLabel.text = state.current.get_langs_text()
 
-    def click_handler(self, btn):
-        reader, error = load_reader()
-
-        if isinstance(error, Exception):
-            print(error)
-            btn.text = "Error"
+    def load_langs(self, _):
+        # if no languages are selected
+        if len(state.current.langs) < 1:
+            self.langPopupLabel.text = "You have not selected any languages"
             return
 
-        read_from_image(reader, "mock/note.png")
-        btn.text = "Read"
+        # try to load the languages
+        self.reader, error = load_reader(state.current.get_lang_keys())
+
+        # if got an error
+        if isinstance(error, Exception):
+            # reset langs state and and set ui to error message
+            state.current.reset_langs()
+            self.langsLabel.text = state.current.get_langs_text()
+            self.langPopupLabel.text = f"Error: {error}"
+            return
+
+        # otherwise set label to loaded
+        self.langPopupLabel.text = "Loaded successfully"
+
+    def extract_text(self, _):
+        # if reader is None don't try to read
+        if self.reader == None:
+            return
+
+        extracted_text = read_from_image(self.reader, "mock/note.png")
+        self.textLabel.text = str(extracted_text)
 
 
 def run_app():
