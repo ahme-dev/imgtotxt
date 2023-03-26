@@ -49,6 +49,7 @@ class MyApp(toga.App):
 
         # hook on exit handler, add content to main window and show
         self.on_exit = self.action_question_dialog
+        self.main_window.size = (500, 300)
         self.main_window.content = box
         self.main_window.show()
 
@@ -96,7 +97,9 @@ class MyApp(toga.App):
 def run_app():
     return MyApp(
         formal_name=APP_NAME,
+        description="A native python OCR app running locally to extract text from your images.",
         app_id="systems.ahmed.imgtotxt",
         app_name=APP_NAME.lower(),
-        author="https://ahmed.systems",
+        home_page="http://ahmed.systems",
+        author="Ahmed K. A.",
     )
