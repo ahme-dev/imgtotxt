@@ -1,5 +1,6 @@
 """interfaces for the easyocr package"""
 
+from os import path
 import easyocr as ocr
 from easyocr import Reader
 
@@ -109,11 +110,11 @@ def load_reader(model_names: list[str]):
 def read_from_image(reader: Reader, image_path: str, paragraph=True):
     """uses reader to read text in given image path"""
 
-    print(image_path)
-
     result = reader.readtext(image_path, paragraph=paragraph)
 
-    print(result)
-    print(result[0])
-    print(result[0][1])
-    return result
+    result_string = ""
+
+    for res in result:
+        result_string += f"{res[1]} \n"
+
+    return result_string

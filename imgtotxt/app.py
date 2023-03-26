@@ -1,6 +1,6 @@
 import sys
 import toga
-from toga.style.pack import Pack, ROW, COLUMN
+from toga.style.pack import Pack, ROW, COLUMN, TOP
 from imgtotxt import state
 from imgtotxt.ocr import LANGUAGES, load_reader, read_from_image
 
@@ -30,7 +30,7 @@ class MyApp(toga.App):
         self.textLabel = toga.Label(state.current.text)
 
         box = toga.Box(
-            style=Pack(direction=ROW, padding=10),
+            style=Pack(direction=ROW, padding=20, padding_bottom=30, padding_top=0),
             children=[
                 toga.Box(
                     style=Pack(direction=COLUMN, padding=10),
@@ -55,14 +55,23 @@ class MyApp(toga.App):
                 ),
                 toga.Divider(direction=toga.Divider.VERTICAL, style=container_style),
                 toga.Box(
-                    style=Pack(direction=COLUMN, padding=10),
+                    style=Pack(direction=COLUMN, padding=10, flex=1),
                     children=[
                         toga.Label("Selected Languages", style=title_style),
                         self.langsLabel,
                         toga.Label("Current Image", style=title_style),
                         self.imageLabel,
                         toga.Label("Extracted Text", style=title_style),
-                        self.textLabel,
+                        toga.ScrollContainer(
+                            style=Pack(flex=1),
+                            vertical=True,
+                            content=toga.Box(
+                                style=Pack(flex=1, direction=ROW, alignment=TOP),
+                                children=[
+                                    self.textLabel,
+                                ],
+                            ),
+                        ),
                     ],
                 ),
             ],
@@ -92,8 +101,8 @@ class MyApp(toga.App):
                 return
 
             # otherwise set both ui and state to filename
-            state.current.image = fname
-            self.imageLabel.text = fname
+            state.current.image = str(fname)
+            self.imageLabel.text = str(fname)
 
         except ValueError:
             return
@@ -171,7 +180,7 @@ class MyApp(toga.App):
         if self.reader == None:
             return
 
-        extracted_text = read_from_image(self.reader, "mock/note.png")
+        extracted_text = read_from_image(self.reader, state.current.image)
         self.textLabel.text = str(extracted_text)
 
 
