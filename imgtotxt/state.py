@@ -1,6 +1,11 @@
+from imgtotxt.ocr import LANGUAGES
+
+
 class AppState:
     def __init__(self):
         self.langs = []
+        self.image = "No image selected"
+        self.text = "No text extracted"
 
     def get_langs_text(self):
         """retun a nicely formatted string of languages or none"""

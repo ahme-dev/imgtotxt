@@ -26,6 +26,7 @@ class MyApp(toga.App):
 
         # bind some components to self
         self.langsLabel = toga.Label(state.current.get_langs_text())
+        self.imageLabel = toga.Label(state.current.image)
 
         box = toga.Box(
             style=Pack(direction=ROW, padding=10),
@@ -54,7 +55,7 @@ class MyApp(toga.App):
                         toga.Label("Selected Languages", style=title_style),
                         self.langsLabel,
                         toga.Label("Current Image", style=title_style),
-                        toga.Label("No image selected"),
+                        self.imageLabel,
                         toga.Label("Extracted Text", style=title_style),
                         toga.Label("No text extracted"),
                     ],
@@ -80,12 +81,17 @@ class MyApp(toga.App):
 
             # if no file was selected return
             if fname is None:
-                self.main_window.title = "No file selected!"
+                # reset ui and state to none
+                state.current.image = "No image selected"
+                self.imageLabel.text = "No image selected"
                 return
 
-            self.main_window.title = f"File to open: {fname}"
+            # otherwise set both ui and state to filename
+            state.current.image = fname
+            self.imageLabel.text = fname
+
         except ValueError:
-            self.main_window.text = "Open file dialog was canceled"
+            return
 
     async def action_question_dialog(self, _):
         """on app exit ask for confirmation"""
@@ -136,7 +142,7 @@ class MyApp(toga.App):
         self.langsLabel.text = state.current.get_langs_text()
 
     def click_handler(self, btn):
-        reader, error = load_reader(["en", "ar", "ku"])
+        reader, error = load_reader()
 
         if isinstance(error, Exception):
             print(error)
