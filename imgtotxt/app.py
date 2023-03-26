@@ -17,7 +17,7 @@ class MyApp(toga.App):
         image.style.update(height=300, width=300)
 
         # create styles for the components
-        title_style = Pack(font_size=20, padding_bottom=12, padding_top=10)
+        title_style = Pack(font_size=20, padding_bottom=10, padding_top=20)
         button_style = Pack(padding_bottom=8)
         container_style = Pack(
             padding_bottom=5, padding_top=5, padding_left=20, padding_right=20
@@ -30,8 +30,16 @@ class MyApp(toga.App):
                     style=Pack(direction=COLUMN, padding=10),
                     children=[
                         toga.Label("Actions", style=title_style),
-                        toga.Button("Languages", style=button_style),
-                        toga.Button("Open Image", style=button_style),
+                        toga.Button(
+                            "Languages",
+                            style=button_style,
+                            on_press=self.action_open_secondary_window,
+                        ),
+                        toga.Button(
+                            "Open Image",
+                            style=button_style,
+                            on_press=self.action_open_file_filtered_dialog,
+                        ),
                         toga.Button("Extract Text", style=button_style),
                     ],
                 ),
@@ -39,17 +47,20 @@ class MyApp(toga.App):
                 toga.Box(
                     style=Pack(direction=COLUMN, padding=10),
                     children=[
-                        toga.Label("Image", style=title_style),
-                        toga.Label("Text", style=title_style),
-                        toga.Label("The text extracted will display here"),
+                        toga.Label("Selected Languages", style=title_style),
+                        toga.Label("No languages selected"),
+                        toga.Label("Current Image", style=title_style),
+                        toga.Label("No image selected"),
+                        toga.Label("Extracted Text", style=title_style),
+                        toga.Label("No text extracted"),
                     ],
                 ),
             ],
         )
 
-        # hook on exit handler, add content to main window and show
+        # hook on exit handler, add content to main window, set size, and show
         self.on_exit = self.action_question_dialog
-        self.main_window.size = (500, 300)
+        self.main_window.size = (500, 400)
         self.main_window.content = box
         self.main_window.show()
 
@@ -82,16 +93,47 @@ class MyApp(toga.App):
         else:
             return
 
-    # def click_handler(self, btn):
-    #     reader, error = load_reader(["en", "ar", "ku"])
+    def action_open_secondary_window(self, widget):
+        window = toga.Window(title="Selected languages to detect")
 
-    #     if isinstance(error, Exception):
-    #         print(error)
-    #         btn.text = "Error"
-    #         return
+        window.content = toga.Box(
+            style=Pack(flex=1, direction=COLUMN, padding=20),
+            children=[
+                toga.Label(
+                    style=Pack(padding_bottom=10),
+                    text="Note: some languages are incompatible with each other",
+                ),
+                toga.Selection(
+                    items=list(LANGUAGES.keys()), style=Pack(padding_bottom=10)
+                ),
+                toga.Box(
+                    style=Pack(padding_bottom=10),
+                    children=[
+                        toga.Label(
+                            text="Selected: ",
+                        ),
+                        toga.Label(
+                            text="English",
+                        ),
+                    ],
+                ),
+            ],
+        )
 
-    #     read_from_image(reader, "mock/note.png")
-    #     btn.text = "Read"
+        self.windows += window
+        window.size = (200, 100)
+        window.show()
+
+    def click_handler(self, btn):
+        reader, error = load_reader(["en", "ar", "ku"])
+
+        if isinstance(error, Exception):
+            print(error)
+            btn.text = "Error"
+            return
+
+        read_from_image(reader, "mock/note.png")
+        btn.text = "Read"
 
 
 def run_app():
