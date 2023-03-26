@@ -1,6 +1,7 @@
 import sys
 import toga
 from toga.style.pack import Pack, ROW, COLUMN
+from imgtotxt import state
 from imgtotxt.ocr import LANGUAGES, load_reader, read_from_image
 
 
@@ -22,6 +23,9 @@ class MyApp(toga.App):
         container_style = Pack(
             padding_bottom=5, padding_top=5, padding_left=20, padding_right=20
         )
+
+        # bind some components to self
+        self.langsLabel = toga.Label(state.current.get_langs_text())
 
         box = toga.Box(
             style=Pack(direction=ROW, padding=10),
@@ -48,7 +52,7 @@ class MyApp(toga.App):
                     style=Pack(direction=COLUMN, padding=10),
                     children=[
                         toga.Label("Selected Languages", style=title_style),
-                        toga.Label("No languages selected"),
+                        self.langsLabel,
                         toga.Label("Current Image", style=title_style),
                         toga.Label("No image selected"),
                         toga.Label("Extracted Text", style=title_style),
@@ -95,6 +99,7 @@ class MyApp(toga.App):
 
     def action_open_secondary_window(self, _):
         window = toga.Window(title="Selected languages to detect")
+        self.langsWindowLabel = toga.Label(state.current.get_langs_text())
 
         window.content = toga.Box(
             style=Pack(flex=1, direction=COLUMN, padding=20),
@@ -104,7 +109,9 @@ class MyApp(toga.App):
                     text="Note: some languages are incompatible with each other",
                 ),
                 toga.Selection(
-                    items=list(LANGUAGES.keys()), style=Pack(padding_bottom=10)
+                    items=list(LANGUAGES.keys()),
+                    style=Pack(padding_bottom=10),
+                    on_select=self.change_select,
                 ),
                 toga.Box(
                     style=Pack(padding_bottom=10),
@@ -112,9 +119,7 @@ class MyApp(toga.App):
                         toga.Label(
                             text="Selected: ",
                         ),
-                        toga.Label(
-                            text="English",
-                        ),
+                        self.langsWindowLabel,
                     ],
                 ),
             ],
@@ -123,6 +128,12 @@ class MyApp(toga.App):
         self.windows += window
         window.size = (200, 100)
         window.show()
+
+    def change_select(self, widget: toga.Selection):
+        """on new selection change state and ui"""
+        state.current.modify_langs(widget.value)
+        self.langsWindowLabel.text = state.current.get_langs_text()
+        self.langsLabel.text = state.current.get_langs_text()
 
     def click_handler(self, btn):
         reader, error = load_reader(["en", "ar", "ku"])
