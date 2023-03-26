@@ -4,6 +4,9 @@ from toga.style.pack import Pack, ROW, CENTER, COLUMN
 from imgtotxt.ocr import LANGUAGES, load_reader, read_from_image
 
 
+APP_NAME = "ImgToText"
+
+
 class MyApp(toga.App):
     def startup(self):
         # create main window
@@ -71,7 +74,7 @@ class MyApp(toga.App):
     async def action_question_dialog(self, _):
         """on app exit ask for confirmation"""
         if await self.main_window.question_dialog(
-            "ImgToTxt", "Do you want to exit the app?"
+            APP_NAME, "Do you want to exit the app?"
         ):
             print("Exited")
             sys.exit(0)
@@ -92,8 +95,8 @@ class MyApp(toga.App):
 
 def run_app():
     return MyApp(
-        formal_name="ImgToTxt - Image To Text",
+        formal_name=APP_NAME,
         app_id="systems.ahmed.imgtotxt",
-        app_name="imgtotxt",
+        app_name=APP_NAME.lower(),
         author="https://ahmed.systems",
     )
