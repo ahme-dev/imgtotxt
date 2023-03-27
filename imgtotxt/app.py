@@ -13,10 +13,6 @@ class MyApp(toga.App):
         # create main window
         self.main_window = toga.MainWindow(title=self.name)
 
-        # create image
-        image = toga.ImageView(toga.Image("../mock/note.png"))
-        image.style.update(height=300, width=300)
-
         # create styles for the components
         title_style = Pack(font_size=20, padding_bottom=10, padding_top=20)
         button_style = Pack(padding_bottom=8)
