@@ -4,6 +4,8 @@ __pycache__/
 *pycache*
 *mypy*
 
+*.egg*
+build/
 dist/
 
 *.manifest

@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "imgtotxt"
+version = "0.1.0"
+description = "OCR app running locally with native UI"
+authors = ["Ahmed K.A. <ahmadkabdullah@pm.me>"]
+license = "GPL-3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+easyocr = "^1.6.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+startv = "python -m imgtotxt"
