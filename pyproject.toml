@@ -13,5 +13,8 @@ description = "OCR app running locally with native UI"
 license = { text = "GPL-3" }
 authors = [{ name = "Ahmed K. A.", email = "ahmadkabdullah@pm.me" }]
 
+[project.gui-scripts]
+imgtotxt = "imgtotxt:main"
+
 [tool.setuptools.packages.find]
 include = ["imgtotxt"]
