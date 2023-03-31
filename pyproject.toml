@@ -10,7 +10,7 @@ name = "imgtotxt"
 version = "0.1.0"
 dependencies = ["easyocr", "toga"]
 description = "OCR app running locally with native UI"
-license = "GPL-3"
+license = { text = "GPL-3" }
 authors = [{ name = "Ahmed K. A.", email = "ahmadkabdullah@pm.me" }]
 
 [tool.setuptools.packages.find]
