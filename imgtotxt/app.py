@@ -113,7 +113,7 @@ class MyApp(toga.App):
         else:
             return
 
-    def action_open_secondary_window(self, _):
+    async def action_open_secondary_window(self, _):
         window = toga.Window(title="Selected languages to detect")
 
         lang_item_style = Pack(padding_bottom=10)
@@ -151,7 +151,7 @@ class MyApp(toga.App):
         self.langPopupLabel.text = f"Selected: {state.current.get_langs_text()}"
         self.langsLabel.text = state.current.get_langs_text()
 
-    def load_langs(self, _):
+    async def load_langs(self, _):
         # if no languages are selected
         if len(state.current.langs) < 1:
             self.langPopupLabel.text = "You have not selected any languages"

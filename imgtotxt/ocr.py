@@ -1,6 +1,5 @@
 """interfaces for the easyocr package"""
 
-from os import path
 import easyocr as ocr
 from easyocr import Reader
 
