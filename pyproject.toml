@@ -11,6 +11,7 @@ version = "0.1.1"
 dependencies = ["easyocr", "toga"]
 description = "OCR app running locally with native UI"
 license = { text = "GPL-3" }
+readme = "README.md"
 authors = [{ name = "Ahmed K. A.", email = "ahmadkabdullah@pm.me" }]
 
 [project.gui-scripts]
