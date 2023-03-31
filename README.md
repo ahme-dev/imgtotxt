@@ -9,15 +9,28 @@ Made with great libraries:
 
 ## Installation
 Must have Python, Pip, and Git installed.
-- Clone and enter directory:
+
+1. **From pip**:
+  - Install from pip:
+  ```bash
+  pip install imgtotxt
+  ```
+  - Run from terminal/cmd:
+  ```bash
+  imgtotxt
+  ```
+<br>
+
+2. **From git**:
+  - Clone and enter directory:
   ```bash
   git clone --depth=1 https://github.com/ahmeddots/imgtotxt && cd imgtotxt
   ```
-- Install all requirements:
+  - Install all requirements:
   ```bash
   pip install -r requirements.txt
   ```
-- Run the app (only need to repeat this step next time):
+  - Run the app (only need to repeat this step next time):
   ```bash
   python -m imgtotxt
   ```
