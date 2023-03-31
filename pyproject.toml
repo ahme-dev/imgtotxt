@@ -7,15 +7,18 @@ include-package-data = true
 
 [project]
 name = "imgtotxt"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = ["easyocr", "toga"]
 description = "OCR app running locally with native UI"
 license = { text = "GPL-3" }
 readme = "README.md"
 authors = [{ name = "Ahmed K. A.", email = "ahmadkabdullah@pm.me" }]
 
+[project.urls]
+"Homepage" = "https://github.com/ahmeddots/imgtotxt"
+
 [project.gui-scripts]
-imgtotxt = "imgtotxt:main"
+imgtotxt = "imgtotxt:run"
 
 [tool.setuptools.packages.find]
 include = ["imgtotxt"]
