@@ -7,7 +7,7 @@ include-package-data = true
 
 [project]
 name = "imgtotxt"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = ["easyocr", "toga"]
 description = "OCR app running locally with native UI"
 license = { text = "GPL-3" }
